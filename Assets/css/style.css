@@ -1,5 +1,5 @@
 :root {
-    --card-content-bg: red;
+    --button-content-bg: rgb(179, 231, 149);
 }
 
 * {
@@ -14,11 +14,21 @@ h1 {
 
 .card-content-centre {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     padding: 25px;
-    background-color: var(--card-content-bg);
 }
 
-.quiz-begin {
+.start-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    height: 54px;
+    width: 140px;
+    line-height: 20px;
+    background-color: var(--button-content-bg);
     font-size: large;
+    border-radius: 12px;
 }
