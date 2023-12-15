@@ -5,13 +5,17 @@ function questions() {
     // Here is where the newly created element will be displayed.
     var questionsContent = document.getElementById("card-questions");
     // Create an element.
-    var questionsHeader = document.createElement("ol");
+    var questionsHeader = document.createElement("form");
     // Give said element some content.
     questionsHeader.textContent = "this is the content";
     // Append this element to the card-questions div.
     questionsContent.appendChild(questionsHeader);
     // Style the element.
-    questionsHeader.setAttribute("style", "display: flex; flex-direction: column; align-items: center; height: 525px; width: 400px; padding: 20px;");
+    questionsHeader.setAttribute("style", "display: flex; flex-direction: column; align-items: center; height: 190px; width: 400px; padding: 20px;");
+
+    var questionsCard = document.createElement("section");
+    questionsHeader.appendChild(questionsCard);
+    questionsCard.setAttribute("style", "display:flex; padding: 25px;");
 
     var question1 = document.createElement("button");
     var question2 = document.createElement("button");
@@ -23,15 +27,15 @@ function questions() {
     question3.textContent = "content";
     question4.textContent = "content";
 
-    question1.setAttribute("style", "display:flex;");
-    question2.setAttribute("style", "display:flex;");
-    question3.setAttribute("style", "display:flex;");
-    question4.setAttribute("style", "display:flex;");
+    question1.setAttribute("style", "display:flex; background-color: rgb(179, 231, 149); margin: 10px;");
+    question2.setAttribute("style", "display:flex; background-color: rgb(179, 231, 149); margin: 10px;");
+    question3.setAttribute("style", "display:flex; background-color: rgb(179, 231, 149); margin: 10px;");
+    question4.setAttribute("style", "display:flex; background-color: rgb(179, 231, 149); margin: 10px;");
 
-    questionsHeader.appendChild(question1);
-    questionsHeader.appendChild(question2);
-    questionsHeader.appendChild(question3);
-    questionsHeader.appendChild(question4);
+    questionsCard.appendChild(question1);
+    questionsCard.appendChild(question2);
+    questionsCard.appendChild(question3);
+    questionsCard.appendChild(question4);
     
 };
 
