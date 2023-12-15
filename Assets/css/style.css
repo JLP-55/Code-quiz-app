@@ -1,0 +1,24 @@
+:root {
+    --card-content-bg: red;
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+}
+
+.card-content-centre {
+    display: flex;
+    justify-content: center;
+    padding: 25px;
+    background-color: var(--card-content-bg);
+}
+
+.quiz-begin {
+    font-size: large;
+}
