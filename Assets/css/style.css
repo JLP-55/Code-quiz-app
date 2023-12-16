@@ -1,5 +1,6 @@
 :root {
     --button-content-bg: rgb(179, 231, 149);
+    --button-hover: rgb(0, 0, 0);
 }
 
 * {
@@ -7,9 +8,17 @@
     margin: 0px;
 }
 
+/* header {
+    border-bottom: solid;
+    padding: 45px;
+    margin: 0px 500px;
+} */
+
 h1 {
     display: flex;
     justify-content: center;
+    height: 60px;
+    width: auto;
 }
 
 .card-content-centre {
@@ -17,6 +26,7 @@ h1 {
     flex-direction: column;
     align-items: center;
     padding: 25px;
+    bottom: 52px;
 }
 
 .start-button {
@@ -31,4 +41,8 @@ h1 {
     background-color: var(--button-content-bg);
     font-size: large;
     border-radius: 12px;
+}
+
+.start-button:hover {
+    box-shadow: 0 0 10px var(--button-hover) inset;
 }
