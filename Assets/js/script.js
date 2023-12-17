@@ -148,18 +148,109 @@ var objBegin = {
         function highScores() {
             questionsContent.setAttribute("style", "display:none");
 
-            var highScroresEl = document.getElementById("card-2");
+            var highScoresEl = document.getElementById("card-2");
             
             var container = document.createElement("section");
-            container.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-around; align-items:center; margin-top: 25px; font-size: 58px; border:solid; border-radius: 12px; height:300px; width:400px; background-color:rgb(179, 231, 149);");
-            highScroresEl.appendChild(container);
-            container.textContent = "High Scores";
+            container.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-around; align-items:center; margin-top: 25px; font-size: 48px; border:solid; border-radius: 12px; height:300px; width:400px; background-color:rgb(179, 231, 149);");
+            highScoresEl.appendChild(container);
+            container.textContent = "Enter Name:";
 
             var enterInitials = document.createElement("textarea");
             enterInitials.setAttribute("style", "height:40px; width:150px; text-align: center; font-size:25px;");
             container.appendChild(enterInitials);
+
+            var submitButton = document.createElement("button");
+            submitButton.setAttribute("style", "height: 25px; width: 55px; border-radius:12px;");
+            container.appendChild(submitButton);
+            submitButton.textContent = "Submit";
+
+            // enterInitials.addEventListener("keydown", function(event) {
+            //     var key = event.key.toLowerCase();
+            // })
+
+            submitButton.addEventListener("click", function(event) {
+                event.preventDefault();
+
+                // Put scores in local storage.
+                var scores = {
+                    scoreList: enterInitials.value.trim(),
+                };
             
-        }
+                localStorage.setItem("score list", JSON.stringify(scores));
+
+                // Generate css items.
+                var leaderBoard = document.getElementById("card-3");
+
+                var container2 = document.createElement("section");
+                container2.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-between; align-items:center; margin-top: 25px; padding:20px; font-size: 48px; border:solid; border-radius: 12px; height:600px; width:400px; background-color:rgb(179, 231, 149);");
+                leaderBoard.appendChild(container2);
+                container2.textContent = "Leaderboard";
+
+                var playAgainButton = document.createElement("button");
+                playAgainButton.setAttribute("style", "height: 45px; width: 55px; border-radius:12px; margin-bottom: 22px;");
+                container2.appendChild(playAgainButton);
+                playAgainButton.textContent = "Play again?";
+
+                highScoresEl.setAttribute("style", "display:none;");
+
+                // Log player values and render them to the leaderboard.
+                var scoreLi = [];
+
+                function renderLi() {
+                    for (var i = 0; i < scoreLi.length; i++)
+                    var items = scoreLi[i];
+
+                    var li = document.createElement("li");
+                    li.textContent = items;
+                    li.setAttribute("data-index", i);
+
+                    leaderBoard.appendChild(li);
+                };
+
+                enterInitials.addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    renderLi();
+
+                    var entry = entryInput.value.trim();
+
+                    scores.push(entry);
+                });
+
+                // Play again.
+                function refreshPage() {
+                    window.location.reload();
+                };
+
+                playAgainButton.addEventListener("click", function(event) {
+                    refreshPage();
+                });
+
+            });
+
+            // var scores = [];
+
+            // Stores the empty array above in local storage with the key of "scores"
+            // function storeInitials() {
+            //     localStorage.setItem("scores", JSON.stringify(scores));
+            //     var allscores = JSON.parse(localStorage.getItem("scores"));
+            // };
+
+            // function individualScores() {
+            //     var playerScores = {
+            //         enterInitials: "",
+            //     };
+            // };
+
+            // submitButton.addEventListener("click", function (event) {
+            //     // event.preventDefault();
+            //     storeInitials();
+            //     individualScores();
+                
+            //     var leaderBoard = document.getElementById("card-3");
+
+            //     highScoresEl.setAttribute("style", "display:none;")
+            // });
+        };
     },
 };
 
