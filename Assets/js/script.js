@@ -3,8 +3,8 @@ var startButton = document.querySelector(".start-button");
 
 // Gets the div with the id "#card"
 var questionsContent = document.getElementById("card");
-var allQuestions = [question1, question2, question3, question4];
 
+// this variable is used in the setInterval function.
 var secondsLeft = questionArray.length * 15;
 
 // Create the timerInterval in the global scope instead of in the begin quiz function
@@ -16,35 +16,15 @@ var question1 =  document.createElement("button");
 var question2 =  document.createElement("button");
 var question3 =  document.createElement("button");
 var question4 =  document.createElement("button");
-var index = 0;
-
 var paraEl = document.createElement("p");
-// function beginQuiz() {
-//     secondsLeft = 120;
-//     var timerInterval = setInterval(function() {
-//         secondsLeft--;
-//         startButton.textContent = "time remaining:\n" + secondsLeft + " seconds";
-        
-//         if (secondsLeft === 0) {
-//             clearInterval(timerInterval);
-//             objBegin.highScores();
-//         };
-//         objBegin.beginQuiz();
-//     }, 10);
-// }
 
+// Begin at questionArray[0] from questions.js
+var index = 0;
 
 
 var objBegin = {
-    // questionsHeader: document.createElement = "form",
-    // questionsCard: document.createElement = "section",
-    // question1:document.createElement = "button",
-    // question2:document.createElement = "button",
-    // question3:document.createElement = "button",
-    // question4:document.createElement = "button",
 
     beginQuiz: function() {          
-        // secondsLeft = 120;
         timerInterval = setInterval(function() {
             secondsLeft--;
             startButton.textContent = "time remaining:\n" + secondsLeft + " seconds";
@@ -61,7 +41,7 @@ var objBegin = {
         
         function questions() { 
             // Resets the paraEl from the value given in nextQuestion function.
-            // paraEl.textContent = "";
+            paraEl.textContent = "";
 
             // h3: give content, style, append.
             questionsHeader.textContent = questionArray[index].question;
@@ -88,20 +68,14 @@ var objBegin = {
 
             // p: style, append.
             paraEl.setAttribute("style", "");
-            questionsCard.appendChild(paraEl);
+            questionsHeader.appendChild(paraEl);
 
             questionsCard.addEventListener("click", nextQuestion);
-            // 
-            // question2.addEventListener("click", objBegin.secondsLeft-10);
-            // if (allQuestions[0]) {
-            //     nextQuestion();
-            // } else if (allQuestions[1] || allQuestions[2] || allQuestions[3]) {
-            //     secondsLeft-10;
-            // };
         };
         
         function nextQuestion(event) {
             var userChoice = event.target.textContent;
+            // Here you are targeting the questionsArray in the questions.js file.
             var answer = questionArray[index].answer;
             if (userChoice === answer) {
                 paraEl.textContent = "Correct";
@@ -109,75 +83,23 @@ var objBegin = {
                 paraEl.textContent = "Wrong";
                 secondsLeft = secondsLeft -10;
             };
+            
+            // If the index (of the questionsArray in questions.js) === 4 (the last item in that array).
+            if (index === 4) {
+                clearInterval(timerInterval);
+                setTimeout(highScores, 500);
+                return;
+            };
+            // Index plus one moves to the next item in the questionsArray.
             index++;
+            // Calls the function questions, but will delay by 1/2 a second due to the setTimeout.
             setTimeout(questions, 500);
-
-            // questions();
-            // Form: give content, style, append.
-            // questionsHeader.textContent = "this is the content again";
-            // questionsHeader.setAttribute("style", "display: flex; flex-direction: column; align-items: center; height: 190px; width: 400px; padding: 20px;");
-            // questionsContent.appendChild(questionsHeader);
-            
-            // // Section: style, append.
-            // questionsCard.setAttribute("style", "display:flex; margin-top: 300px; padding: 25px;");
-            // questionsHeader.appendChild(questionsCard);
-            
-            // // Button: give content, style, append.
-            // question1.textContent = "more content";
-            // question2.textContent = "more content";
-            // question3.textContent = "more content";
-            // question4.textContent = "more content";    
-            // question1.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-            // question2.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-            // question3.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-            // question4.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");    
-            // questionsCard.appendChild(question1);
-            // questionsCard.appendChild(question2);
-            // questionsCard.appendChild(question3);
-            // questionsCard.appendChild(question4);
-            
-            // question1.addEventListener("click", nextQuestion2);
-            // question2.addEventListener("click", secondsLeft = -10);
-            // if (allQuestions[0]) {
-            //     nextQuestion2();
-            // } else if (allQuestions[1] || allQuestions[2] || allQuestions[3]) {
-            //     secondsLeft-10;
-            // };
         };
-        
-        // function nextQuestion2() {
-        //     // Form: give content, style, append.
-        //     questionsHeader.textContent = "this is also the content";
-        //     questionsHeader.setAttribute("style", "display: flex; flex-direction: column; align-items: center; height: 190px; width: 400px; padding: 20px;");
-        //     questionsContent.appendChild(questionsHeader);
-            
-        //     // Section: style, append.
-        //     questionsCard.setAttribute("style", "display:flex; margin-top: 300px; padding: 25px;");
-        //     questionsHeader.appendChild(questionsCard);
-            
-        //     // Button: give content, style, append.
-        //     question1.textContent = "further content";
-        //     question2.textContent = "further content";
-        //     question3.textContent = "further content";
-        //     question4.textContent = "further content";    
-        //     // question1.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-        //     // question2.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-        //     // question3.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-        //     // question4.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");    
-        //     // questionsCard.appendChild(question1);
-        //     // questionsCard.appendChild(question2);
-        //     // questionsCard.appendChild(question3);
-        //     // questionsCard.appendChild(question4);
-            
-        //     if (allQuestions[0]) {
-        //         nextQuestion2();
-        //     } else if (allQuestions[1] || allQuestions[2] || allQuestions[3]) {
-        //         secondsLeft-10;
-        //     };
-        // };
 
         function highScores() {
+            // Removes previous elements from display.
             questionsContent.setAttribute("style", "display:none");
+            startButton.setAttribute("style", "display:none");
 
             var highScoresEl = document.getElementById("card-2");
             
@@ -189,27 +111,21 @@ var objBegin = {
             var enterInitials = document.createElement("textarea");
             enterInitials.setAttribute("style", "height:40px; width:150px; text-align: center; font-size:25px;");
             container.appendChild(enterInitials);
+            // enterInitials.textContent = "";
 
             var submitButton = document.createElement("button");
             submitButton.setAttribute("style", "height: 25px; width: 55px; border-radius:12px;");
             container.appendChild(submitButton);
             submitButton.textContent = "Submit";
 
-            // enterInitials.addEventListener("keydown", function(event) {
-            //     var key = event.key.toLowerCase();
-            // })
+            submitButton.addEventListener("click", function() {
 
-            submitButton.addEventListener("click", function(event) {
-                event.preventDefault();
-                // renderLi();
                 // Put scores in local storage.
-                var scores = {
-                    scoreList: enterInitials.value.trim(),
-                };
+                var scores = enterInitials.value.trim(); 
             
                 localStorage.setItem("score list", JSON.stringify(scores));
 
-                // Generate css items.
+                // Generate elements.
                 var leaderBoard = document.getElementById("card-3");
 
                 var container2 = document.createElement("section");
@@ -217,8 +133,9 @@ var objBegin = {
                 leaderBoard.appendChild(container2);
                 container2.textContent = "Leaderboard";
 
-                var containerArticle = document.createElement("article");
-                containerArticle.setAttribute("style", )
+                var leaderBoardItems = document.createElement("article");
+                leaderBoardItems.setAttribute("style", "display:flex; flex-direction:column; height:500px; width:420px; font-size:25px;");
+                container2.appendChild(leaderBoardItems);
 
                 var playAgainButton = document.createElement("button");
                 playAgainButton.setAttribute("style", "height: 45px; width: 55px; border-radius:12px; margin-bottom: 22px;");
@@ -227,63 +144,27 @@ var objBegin = {
 
                 highScoresEl.setAttribute("style", "display:none;");
 
-                // Log player values and render them to the leaderboard.
-                // var scoreLi = [];
-
-                // function renderLi() {
-                //     for (var i = 0; i < scoreLi.length; i++)
-                //     var items = scoreLi[i];
-
-                //     var li = document.createElement("li");
-                //     li.textContent = scores;
-                //     li.setAttribute("data-index", i);
-
-                //     leaderBoard.appendChild(li);
+                // if (enterInitials === "") {
+                //     window.alert("Are you sure you don't want to log your score?");
                 // };
 
-                // enterInitials.addEventListener("submit", function(event) {
-                //     event.preventDefault();
-                //     renderLi();
+                // Render player names
+                function renderScores() {
+                    var playerName = localStorage.getItem("score list");
 
-                //     var entry = entryInput.value.trim();
+                    leaderBoardItems.textContent = playerName;
+                };
 
-                //     scores.push(entry);
-                // });
+                renderScores();
 
                 // Play again.
                 function refreshPage() {
                     window.location.reload();
                 };
 
-                playAgainButton.addEventListener("click", function(event) {
-                    refreshPage();
-                });
+                playAgainButton.addEventListener("click", refreshPage);
 
             });
-
-            // var scores = [];
-
-            // Stores the empty array above in local storage with the key of "scores"
-            // function storeInitials() {
-            //     localStorage.setItem("scores", JSON.stringify(scores));
-            //     var allscores = JSON.parse(localStorage.getItem("scores"));
-            // };
-
-            // function individualScores() {
-            //     var playerScores = {
-            //         enterInitials: "",
-            //     };
-            // };
-
-            // submitButton.addEventListener("click", function (event) {
-            //     // event.preventDefault();
-            //     storeInitials();
-            //     individualScores();
-                
-            //     var leaderBoard = document.getElementById("card-3");
-
-            //     highScoresEl.setAttribute("style", "display:none;")
-            // });
         };
     },
 };
