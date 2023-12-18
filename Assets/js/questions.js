@@ -18,4 +18,4 @@ var questionArray = [{
     question: "q5",
     choices: ["c1", "c2", "c3", "c4"],
     answer: "c4",
-}];
+},];
