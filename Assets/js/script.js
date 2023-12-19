@@ -22,152 +22,181 @@ var paraEl = document.createElement("p");
 var index = 0;
 
 
-var objBegin = {
+function beginQuiz() {          
+   timerInterval = setInterval(function() {
+       secondsLeft--;
+       startButton.textContent = "time remaining:\n" + secondsLeft + " seconds";
+       
+       if (secondsLeft === 0) {
+           clearInterval(timerInterval);
+           highScores();
+       };
 
-    beginQuiz: function() {          
-        timerInterval = setInterval(function() {
-            secondsLeft--;
-            startButton.textContent = "time remaining:\n" + secondsLeft + " seconds";
-            
-            if (secondsLeft === 0) {
-                clearInterval(timerInterval);
-                highScores();
-            };
+   // Run the above function every 1000 milliseconds.
+   }, 1000);
+   
+   questions();
+   
+   function questions() { 
+       // Resets the paraEl from the value given in nextQuestion function.
+       paraEl.textContent = "";
 
-        // Run the above function every 1000 milliseconds.
-        }, 1000);
-        
-        questions();
-        
-        function questions() { 
-            // Resets the paraEl from the value given in nextQuestion function.
-            paraEl.textContent = "";
+       // h3: give content, style, append.
+       questionsHeader.textContent = questionArray[index].question;
+       questionsHeader.setAttribute("style", "display: flex; flex-direction: column; align-items: center; height: 190px; width: 400px; padding: 20px;");
+       questionsContent.appendChild(questionsHeader);
+       
+       // Section: style, append.
+       questionsCard.setAttribute("style", "display:flex; margin-top: 300px; padding: 25px;");
+       questionsHeader.appendChild(questionsCard);
+       
+       // Button: give content, style, append.
+       question1.textContent = questionArray[index].choices[0];
+       question2.textContent = questionArray[index].choices[1];
+       question3.textContent = questionArray[index].choices[2];
+       question4.textContent = questionArray[index].choices[3];    
+       question1.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
+       question2.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
+       question3.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
+       question4.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");    
+       questionsCard.appendChild(question1);
+       questionsCard.appendChild(question2);
+       questionsCard.appendChild(question3);
+       questionsCard.appendChild(question4);
 
-            // h3: give content, style, append.
-            questionsHeader.textContent = questionArray[index].question;
-            questionsHeader.setAttribute("style", "display: flex; flex-direction: column; align-items: center; height: 190px; width: 400px; padding: 20px;");
-            questionsContent.appendChild(questionsHeader);
-            
-            // Section: style, append.
-            questionsCard.setAttribute("style", "display:flex; margin-top: 300px; padding: 25px;");
-            questionsHeader.appendChild(questionsCard);
-            
-            // Button: give content, style, append.
-            question1.textContent = questionArray[index].choices[0];
-            question2.textContent = questionArray[index].choices[1];
-            question3.textContent = questionArray[index].choices[2];
-            question4.textContent = questionArray[index].choices[3];    
-            question1.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-            question2.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-            question3.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-            question4.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");    
-            questionsCard.appendChild(question1);
-            questionsCard.appendChild(question2);
-            questionsCard.appendChild(question3);
-            questionsCard.appendChild(question4);
+       // p: style, append.
+       paraEl.setAttribute("style", "");
+       questionsHeader.appendChild(paraEl);
 
-            // p: style, append.
-            paraEl.setAttribute("style", "");
-            questionsHeader.appendChild(paraEl);
+       questionsCard.addEventListener("click", nextQuestion);
+   };
+   
+   function nextQuestion(event) {
+       var userChoice = event.target.textContent;
+       // Here you are targeting the questionsArray in the questions.js file.
+       var answer = questionArray[index].answer;
+       if (userChoice === answer) {
+           paraEl.textContent = "Correct";
+       } else {
+           paraEl.textContent = "Wrong";
+           secondsLeft = secondsLeft -10;
+       };
+       
+       // If the index (of the questionsArray in questions.js) === 4 (the last item in that array).
+       if (index === 4) {
+           clearInterval(timerInterval);
+           setTimeout(highScores, 500);
+           return;
+       };
+       // Index plus one moves to the next item in the questionsArray.
+       index++;
+       // Calls the function questions, but will delay by 1/2 a second due to the setTimeout.
+       setTimeout(questions, 500);
+   };
 
-            questionsCard.addEventListener("click", nextQuestion);
-        };
-        
-        function nextQuestion(event) {
-            var userChoice = event.target.textContent;
-            // Here you are targeting the questionsArray in the questions.js file.
-            var answer = questionArray[index].answer;
-            if (userChoice === answer) {
-                paraEl.textContent = "Correct";
-            } else {
-                paraEl.textContent = "Wrong";
-                secondsLeft = secondsLeft -10;
-            };
-            
-            // If the index (of the questionsArray in questions.js) === 4 (the last item in that array).
-            if (index === 4) {
-                clearInterval(timerInterval);
-                setTimeout(highScores, 500);
-                return;
-            };
-            // Index plus one moves to the next item in the questionsArray.
-            index++;
-            // Calls the function questions, but will delay by 1/2 a second due to the setTimeout.
-            setTimeout(questions, 500);
-        };
+   function highScores() {
+       // Removes previous elements from display.
+       questionsContent.setAttribute("style", "display:none");
+       startButton.setAttribute("style", "display:none");
 
-        function highScores() {
-            // Removes previous elements from display.
-            questionsContent.setAttribute("style", "display:none");
-            startButton.setAttribute("style", "display:none");
+       var highScoresEl = document.getElementById("card-2");
+       
+       var container = document.createElement("section");
+       container.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-around; align-items:center; margin-top: 25px; font-size: 48px; border:solid; border-radius: 12px; height:300px; width:400px; background-color:rgb(179, 231, 149);");
+       highScoresEl.appendChild(container);
+       container.textContent = "Enter Name:";
 
-            var highScoresEl = document.getElementById("card-2");
-            
-            var container = document.createElement("section");
-            container.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-around; align-items:center; margin-top: 25px; font-size: 48px; border:solid; border-radius: 12px; height:300px; width:400px; background-color:rgb(179, 231, 149);");
-            highScoresEl.appendChild(container);
-            container.textContent = "Enter Name:";
+       var enterInitials = document.createElement("textarea");
+       enterInitials.setAttribute("style", "height:40px; width:150px; text-align: center; font-size:25px;");
+       container.appendChild(enterInitials);
 
-            var enterInitials = document.createElement("textarea");
-            enterInitials.setAttribute("style", "height:40px; width:150px; text-align: center; font-size:25px;");
-            container.appendChild(enterInitials);
-            // enterInitials.textContent = "";
+       var submitButton = document.createElement("button");
+       submitButton.setAttribute("style", "height: 25px; width: 55px; border-radius:12px;");
+       container.appendChild(submitButton);
+       submitButton.textContent = "Submit";
 
-            var submitButton = document.createElement("button");
-            submitButton.setAttribute("style", "height: 25px; width: 55px; border-radius:12px;");
-            container.appendChild(submitButton);
-            submitButton.textContent = "Submit";
+       submitButton.addEventListener("click", function() {
+           
+           // We will store all player values in an array.                
+           var scoresArray = [];
 
-            submitButton.addEventListener("click", function() {
+           var storedScores = JSON.parse(localStorage.getItem("score-list"));
+           if (storedScores.length > 0) {
+               scoresArray = scoresArray.concat(storedScores);
+           }
+           
+           function init() {
+               // Create a variable and JSON.parse to getItem from localStorage, and look got the key "score-list"
+               var store = JSON.parse(localStorage.getItem("score-list"));
+               
+               if (store === !null) {
+                   // if store is strictly equal to !null, then give the scores array the value of the variable store.
+                   scoresArray = store;
+               };
+               renderPlayerValues();
+               storeLocal();
+           };
+           
+          // Store player values in local storage.
+          function storeLocal() {
+              localStorage.setItem("score-list", JSON.stringify(scoresArray));
+          };
+          
+          // !!!Need to re-save the new values to local storage!!!
+          // .push values from enterInitials to the end of scoresArray[];
+           scoresArray.push(enterInitials.value.trim()); 
+           
 
-                // Put scores in local storage.
-                var scores = enterInitials.value.trim(); 
-            
-                localStorage.setItem("score list", JSON.stringify(scores));
+           // Generate elements.
+           var leaderBoard = document.getElementById("card-3");
 
-                // Generate elements.
-                var leaderBoard = document.getElementById("card-3");
+           var container2 = document.createElement("section");
+           container2.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-between; align-items:center; margin-top: 25px; padding:20px; font-size: 48px; border:solid; border-radius: 12px; height:600px; width:400px; background-color:rgb(179, 231, 149);");
+           leaderBoard.appendChild(container2);
+           container2.textContent = "Leaderboard";
 
-                var container2 = document.createElement("section");
-                container2.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-between; align-items:center; margin-top: 25px; padding:20px; font-size: 48px; border:solid; border-radius: 12px; height:600px; width:400px; background-color:rgb(179, 231, 149);");
-                leaderBoard.appendChild(container2);
-                container2.textContent = "Leaderboard";
+           var leaderBoardItems = document.createElement("article");
+           leaderBoardItems.setAttribute("style", "display:flex; flex-direction:column; height:500px; width:420px; font-size:25px;");
+           container2.appendChild(leaderBoardItems);
+           // leaderBoardItems.textContent = scoresArray;
 
-                var leaderBoardItems = document.createElement("article");
-                leaderBoardItems.setAttribute("style", "display:flex; flex-direction:column; height:500px; width:420px; font-size:25px;");
-                container2.appendChild(leaderBoardItems);
+           var playAgainButton = document.createElement("button");
+           playAgainButton.setAttribute("style", "height: 45px; width: 55px; border-radius:12px; margin-bottom: 22px;");
+           container2.appendChild(playAgainButton);
+           playAgainButton.textContent = "Play again?";
 
-                var playAgainButton = document.createElement("button");
-                playAgainButton.setAttribute("style", "height: 45px; width: 55px; border-radius:12px; margin-bottom: 22px;");
-                container2.appendChild(playAgainButton);
-                playAgainButton.textContent = "Play again?";
+           highScoresEl.setAttribute("style", "display:none;");
 
-                highScoresEl.setAttribute("style", "display:none;");
+           function renderPlayerValues() {
+               // leaderBoardItems.innerHTML ="";
 
-                // if (enterInitials === "") {
-                //     window.alert("Are you sure you don't want to log your score?");
-                // };
+               for (var i = 0; i < scoresArray.length; i++) {
+                   var playerName = scoresArray[i];
 
-                // Render player names
-                function renderScores() {
-                    var playerName = localStorage.getItem("score list");
+                   // var li = document.createElement("li");
+                   leaderBoardItems.textContent = playerName;
+                   // leaderBoardItems.appendChild(li);
+               };
+           };
 
-                    leaderBoardItems.textContent = playerName;
-                };
+           // Play again.
+           function refreshPage() {
+               window.location.reload();
+           };
 
-                renderScores();
+           playAgainButton.addEventListener("click", refreshPage);
 
-                // Play again.
-                function refreshPage() {
-                    window.location.reload();
-                };
-
-                playAgainButton.addEventListener("click", refreshPage);
-
-            });
-        };
-    },
-};
+           // Call local storage functions to help display player values.
+           // storeLocal();
+           // renderPlayerValues();
+           init();
+       });
+   };
+}
 
 // Add an event listener to the start button. Calls function beginQuiz upon clicking.
-startButton.addEventListener("click", objBegin.beginQuiz);
+startButton.addEventListener("click", beginQuiz);
+
+// to do
+// - log newly generated player values in the scores Array
+// - get seconds left value to rank high score values. 
