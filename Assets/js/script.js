@@ -119,20 +119,34 @@ function beginQuiz() {
            
            // We will store all player values in an array.                
            var scoresArray = [];
-
            var storedScores = JSON.parse(localStorage.getItem("score-list"));
-           if (storedScores.length > 0) {
-               scoresArray = scoresArray.concat(storedScores);
-           }
+
+           if (storedScores === null || storedScores === undefined) {
+            renderPlayerValues();
+           } else if (storedScores.length > 0) {
+            scoresArray = scoresArray.concat(storedScores);
+            storeLocal();
+           };
+        //    if (storedScores.length > 0) {
+        //        scoresArray = scoresArray.concat(storedScores);
+        //    };
+           
+           
            
            function init() {
                // Create a variable and JSON.parse to getItem from localStorage, and look got the key "score-list"
                var store = JSON.parse(localStorage.getItem("score-list"));
-               
+                
+               if (store === null) {
+                storeLocal();
+                // return;
+               };
+
                if (store === !null) {
                    // if store is strictly equal to !null, then give the scores array the value of the variable store.
                    scoresArray = store;
                };
+
                renderPlayerValues();
                storeLocal();
            };
@@ -140,12 +154,17 @@ function beginQuiz() {
           // Store player values in local storage.
           function storeLocal() {
               localStorage.setItem("score-list", JSON.stringify(scoresArray));
-          };
-          
-          // !!!Need to re-save the new values to local storage!!!
-          // .push values from enterInitials to the end of scoresArray[];
-           scoresArray.push(enterInitials.value.trim()); 
-           
+            if (storedScores === !null) {
+                renderPlayerValues();
+            };
+                // if (storedScores.length > 0) {
+                //     scoresArray = scoresArray.concat(storedScores);
+                // };
+            };
+            
+            // !!!Need to re-save the new values to local storage!!!
+            // .push values from enterInitials to the end of scoresArray[];
+            scoresArray.push(enterInitials.value.trim()); 
 
            // Generate elements.
            var leaderBoard = document.getElementById("card-3");
@@ -168,14 +187,14 @@ function beginQuiz() {
            highScoresEl.setAttribute("style", "display:none;");
 
            function renderPlayerValues() {
-               // leaderBoardItems.innerHTML ="";
+            //    leaderBoardItems.innerHTML ="";
 
                for (var i = 0; i < scoresArray.length; i++) {
                    var playerName = scoresArray[i];
 
-                   // var li = document.createElement("li");
-                   leaderBoardItems.textContent = playerName;
-                   // leaderBoardItems.appendChild(li);
+                   var li = document.createElement("li");
+                   li.textContent = playerName;
+                   leaderBoardItems.appendChild(li);
                };
            };
 
