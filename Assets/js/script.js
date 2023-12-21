@@ -1,6 +1,9 @@
 // Add a query selector to the html div with class="start-button"
 var startButton = document.querySelector(".start-button");
 
+var correctSnd = new Audio ("./Assets/sounds/audio-right.mp3");
+var incorrectSnd = new Audio ("./Assets/sounds/audio-wrong.mp3");
+
 // Gets the div with the id "#card"
 var questionsContent = document.getElementById("card");
 
@@ -47,7 +50,7 @@ function beginQuiz() {
        questionsContent.appendChild(questionsHeader);
        
        // Section: style, append.
-       questionsCard.setAttribute("style", "display:flex; margin-top: 300px; padding: 25px;");
+       questionsCard.setAttribute("style", "display:flex; margin-top: 15px; padding: 25px;");
        questionsHeader.appendChild(questionsCard);
        
        // Button: give content, style, append.
@@ -55,10 +58,10 @@ function beginQuiz() {
        question2.textContent = questionArray[index].choices[1];
        question3.textContent = questionArray[index].choices[2];
        question4.textContent = questionArray[index].choices[3];    
-       question1.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-       question2.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-       question3.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");
-       question4.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:35px; width: 150px;");    
+       question1.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:65px; width: 150px;");
+       question2.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:65px; width: 150px;");
+       question3.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:65px; width: 150px;");
+       question4.setAttribute("style", "display:flex; justify-content:center; align-items:center; background-color: rgb(179, 231, 149); margin: 10px; height:65px; width: 150px;");    
        questionsCard.appendChild(question1);
        questionsCard.appendChild(question2);
        questionsCard.appendChild(question3);
@@ -77,9 +80,11 @@ function beginQuiz() {
        var answer = questionArray[index].answer;
        if (userChoice === answer) {
            paraEl.textContent = "Correct";
+           correctSnd.play();
        } else {
            paraEl.textContent = "Wrong";
            secondsLeft = secondsLeft -10;
+           incorrectSnd.play();
        };
        
        // If the index (of the questionsArray in questions.js) === 4 (the last item in that array).
@@ -137,114 +142,128 @@ function beginQuiz() {
        });
 
        submitButton.addEventListener("click", function() {
-        // This if statement will stop the code early if the value of the textarea,
-        // enterInitials is an empty string, in other words, blank.
-        var userInput = enterInitials.value;
-        if (userInput === "") {
-         return;
-        };
-    
-           // Gets the div with id "card-3"
-           var leaderBoard = document.getElementById("card-3");
+           // This if statement will stop the code early if the value of the textarea,
+           // enterInitials is an empty string, in other words, blank.
            
-           // Generate elements.
-           var container2 = document.createElement("section");
-           container2.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-between; align-items:center; margin-top: 25px; padding:20px; font-size: 48px; border:solid; border-radius: 12px; height:600px; width:400px; background-color:rgb(179, 231, 149);");
-           leaderBoard.appendChild(container2);
-           container2.textContent = "Player Scores:";
-
-           var leaderBoardItems = document.createElement("section");
-           leaderBoardItems.setAttribute("style", "display:flex; flex-direction:column; align-items:center; line-height:30px; height:500px; width:420px; font-size:25px;");
-           container2.appendChild(leaderBoardItems);
-
-           var playAgainButton = document.createElement("button");
-           playAgainButton.setAttribute("style", "height: 45px; width: 55px; border-radius:12px; margin-bottom: 22px;");
-           container2.appendChild(playAgainButton);
-           playAgainButton.textContent = "Play again?";
-
-           highScoresEl.setAttribute("style", "display:none;");
-
-           // Create the variable playerTime with the intention, 
-           // of adding it to the current value that will be logged in,
-           // scoresArray.
-           var playerTime = secondsLeft;
-
-           // Give the variable userInput a new value of it's current value,
-           // + the variable playerTime.
-           userInput = userInput.trim() + ": " + playerTime;
-
-           // We will store all player values in this array.                
-           var scoresArray = [];
-
-           // .push the userInput.value to the scoresArray.
-           scoresArray.push(userInput);
-           
-           // JSON.parse to .getItem with the key of "score-list" from local storage,
-           // and set this value to the variable storedScores.
-           var storedScores = JSON.parse(localStorage.getItem("score-list"));
-
-           // After JSON.parse in line above if storedScores are equal to null,
-           // then the code will bypass the else if statement as the value of,
-           // storedScores.length cannot be read.
-
-           // Else if the length of the var storedScores is greated than 0,
-           // add the value in scoresArray to the end of the storedScores array,
-           // then call the function storeLocal to put newly added values back into local storage.
-           if (storedScores === null || storedScores === undefined) {
-
-           } else if (storedScores.length > 0) {
-            scoresArray = scoresArray.concat(storedScores);
-            storeLocal();
-           }; 
-           
-           function init() {                
-            // This if statement will only run if there are no values logged to,
-            // storedScores, so, only for the very first player entry.
-               if (storedScores === null) {
-                storeLocal();
-               };
-
-               // if storedScores is strictly equal to !null, 
-               // then give the scoresArray the value of the variable storedScores.
-               if (storedScores === !null) {
-                   scoresArray = storedScores;
-               };
-
-               renderPlayerValues();
-           };
-           
-          function storeLocal() {
-            // Target the item in local storage with the key of "score-list"
-            // the value of scoresArray has been updated to include the lates input from the played.
-              localStorage.setItem("score-list", JSON.stringify(scoresArray));
+            var userInput = enterInitials.value;
+            if (userInput === "") {
+               return;
             };
-   
-           function renderPlayerValues() {
-
-               for (var i = 0; i < scoresArray.length; i++) {
-                   var playerName = scoresArray[i];
-
-                   var paraEl2 = document.createElement("p");
-                   paraEl2.textContent = playerName;
-                   leaderBoardItems.appendChild(paraEl2);
-               };
-           };
-
-           // Play again.
-           function refreshPage() {
-               window.location.reload();
-           };
-
-           playAgainButton.addEventListener("click", refreshPage);
-
-           init();
+            
+            // Gets the div with id "card-3"
+            var leaderBoard = document.getElementById("card-3");
+            
+            // Generate elements.
+            var container2 = document.createElement("section");
+            container2.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-between; align-items:center; margin-top: 25px; padding:20px; font-size: 48px; border:solid; border-radius: 12px; height:600px; width:400px; background-color:rgb(179, 231, 149);");
+            leaderBoard.appendChild(container2);
+            container2.textContent = "Player Scores:";
+ 
+            var leaderBoardItems = document.createElement("section");
+            leaderBoardItems.setAttribute("style", "display:flex; flex-direction:column; align-items:center; line-height:30px; height:500px; width:420px; font-size:25px;");
+            container2.appendChild(leaderBoardItems);
+ 
+            var subsection = document.createElement("section");
+            subsection.setAttribute("style", "display:flex;");
+            container2.appendChild(subsection);
+ 
+            var playAgainButton = document.createElement("button");
+            playAgainButton.setAttribute("style", "height: 50px; width: 65px; border-radius:12px; margin: 22px 5px;");
+            subsection.appendChild(playAgainButton);
+            playAgainButton.textContent = "Play again?";
+ 
+            var removeHighScoresButton = document.createElement("button");
+            removeHighScoresButton.setAttribute("style", "height: 50px; width: 65px; border-radius:12px; margin: 22px 5px;");
+            subsection.appendChild(removeHighScoresButton);
+            removeHighScoresButton.textContent = "Remove High Scores?";
+  
+            highScoresEl.setAttribute("style", "display:none;");
+ 
+            // Create the variable playerTime with the intention, 
+            // of adding it to the current value that will be logged in,
+            // scoresArray.
+            var playerTime = secondsLeft;
+ 
+            // Give the variable userInput a new value of it's current value,
+            // + the variable playerTime.
+            userInput = userInput.trim() + ": " + playerTime;
+ 
+            // We will store all player values in this array.                
+            var scoresArray = [];
+ 
+            // .push the userInput.value to the scoresArray.
+            scoresArray.push(userInput);
+            
+            // JSON.parse to .getItem with the key of "score-list" from local storage,
+            // and set this value to the variable storedScores.
+            var storedScores = JSON.parse(localStorage.getItem("score-list"));
+ 
+            // After JSON.parse in line above if storedScores are equal to null,
+            // then the code will bypass the else if statement as the value of,
+            // storedScores.length cannot be read.
+ 
+            // Else if the length of the var storedScores is greated than 0,
+            // add the value in scoresArray to the end of the storedScores array,
+            // then call the function storeLocal to put newly added values back into local storage.
+            if (storedScores === null || storedScores === undefined) {
+ 
+            } else if (storedScores.length > 0) {
+             scoresArray = scoresArray.concat(storedScores);
+             storeLocal();
+            }; 
+            
+            function init() {                
+             // This if statement will only run if there are no values logged to,
+             // storedScores, so only for the very first player entry.
+                if (storedScores === null) {
+                 storeLocal();
+                };
+ 
+                // if storedScores is strictly equal to !null, 
+                // then give the scoresArray the value of the variable storedScores.
+                if (storedScores === !null) {
+                    scoresArray = storedScores;
+                };
+ 
+                renderPlayerValues();
+            };
+            
+           function storeLocal() {
+             // Target the item in local storage with the key of "score-list"
+             // the value of scoresArray has been updated to include the latest input from the played.
+               localStorage.setItem("score-list", JSON.stringify(scoresArray));
+            };
+    
+            function renderPlayerValues() {
+ 
+                for (var i = 0; i < scoresArray.length; i++) {
+                    var playerName = scoresArray[i];
+ 
+                    var paraEl2 = document.createElement("p");
+                    paraEl2.textContent = playerName;
+                    leaderBoardItems.appendChild(paraEl2);
+                };
+            };
+ 
+            // Remove high scores.
+            function removeHighScores() {
+                localStorage.removeItem("score-list");
+                leaderBoardItems.setAttribute("style", "display:none;");
+            };
+ 
+            removeHighScoresButton.addEventListener("click", removeHighScores);
+ 
+            // Play again.
+            function refreshPage() {
+                window.location.reload();
+            };
+ 
+            playAgainButton.addEventListener("click", refreshPage);
+ 
+            init();
        });
    };
 }
 
 // Add an event listener to the start button. Calls function beginQuiz upon clicking.
 startButton.addEventListener("click", beginQuiz);
-
-// to do
-// - try adding sound effects to the correct and wrong answers.
-// - add a clear highscores button.

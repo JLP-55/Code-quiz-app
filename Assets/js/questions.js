@@ -1,21 +1,21 @@
 var questionArray = [{
-    question: "q1",
-    choices: ["c1", "c2", "c3", "c4"],
-    answer: "c2",
+    question: "Commonly used data types do not include:",
+    choices: ["Strings", "Alerts", "Booleans", "Numbers"],
+    answer: "Alerts",
 }, {
-    question: "q2",
-    choices: ["c1", "c2", "c3", "c4"],
-    answer: "c3",
+    question: "Arrays in Javascript can be used to store ______ ",
+    choices: ["Numbers and strings", "Booleans", "Other arrays", "All of the above"],
+    answer: "All of the above",
 }, {
-    question: "q3",
-    choices: ["c1", "c2", "c3", "c4"],
-    answer: "c4",
+    question: "How do you log something to the console?",
+    choices: ["log.console()", "var console = log", "console.log()", "Not sure"],
+    answer: "console.log()",
 }, {
-    question: "q4",
-    choices: ["c1", "c2", "c3", "c4"],
-    answer: "c4",
+    question: "What is the purpose of a querySelectorALL() in JavaScript?",
+    choices: ["To link to the css/html", "To select all elements within the html that match a specific css selector", "It will call a function within the code", "To select the first element within the html that matches a specific css selector"],
+    answer: "To select all elements within the html that match a specific css selector",
 }, {
-    question: "q5",
-    choices: ["c1", "c2", "c3", "c4"],
-    answer: "c4",
+    question: "Which of these is not an arithmetic operator?",
+    choices: ["(", "/", "*", "+"],
+    answer: "(",
 },];
