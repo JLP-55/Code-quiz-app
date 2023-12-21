@@ -137,6 +137,13 @@ function beginQuiz() {
        });
 
        submitButton.addEventListener("click", function() {
+        // This if statement will stop the code early if the value of the textarea,
+        // enterInitials is an empty string, in other words, blank.
+        var userInput = enterInitials.value;
+        if (userInput === "") {
+         return;
+        };
+    
            // Gets the div with id "card-3"
            var leaderBoard = document.getElementById("card-3");
            
@@ -144,10 +151,10 @@ function beginQuiz() {
            var container2 = document.createElement("section");
            container2.setAttribute("style", "display:flex; flex-direction:column; justify-content: space-between; align-items:center; margin-top: 25px; padding:20px; font-size: 48px; border:solid; border-radius: 12px; height:600px; width:400px; background-color:rgb(179, 231, 149);");
            leaderBoard.appendChild(container2);
-           container2.textContent = "Leaderboard";
+           container2.textContent = "Player Scores:";
 
-           var leaderBoardItems = document.createElement("article");
-           leaderBoardItems.setAttribute("style", "display:flex; flex-direction:column; height:500px; width:420px; font-size:25px;");
+           var leaderBoardItems = document.createElement("section");
+           leaderBoardItems.setAttribute("style", "display:flex; flex-direction:column; align-items:center; line-height:30px; height:500px; width:420px; font-size:25px;");
            container2.appendChild(leaderBoardItems);
 
            var playAgainButton = document.createElement("button");
@@ -156,12 +163,24 @@ function beginQuiz() {
            playAgainButton.textContent = "Play again?";
 
            highScoresEl.setAttribute("style", "display:none;");
-           
+
+           // Create the variable playerTime with the intention, 
+           // of adding it to the current value that will be logged in,
+           // scoresArray.
+           var playerTime = secondsLeft;
+
+           // Give the variable userInput a new value of it's current value,
+           // + the variable playerTime.
+           userInput = userInput.trim() + ": " + playerTime;
+
            // We will store all player values in this array.                
            var scoresArray = [];
-           // .push the enterInitials.value to the scoresArray.
-           scoresArray.push(enterInitials.value.trim());
-           // JSON.parse to .getItem with the key of "score-list" from local storage.
+
+           // .push the userInput.value to the scoresArray.
+           scoresArray.push(userInput);
+           
+           // JSON.parse to .getItem with the key of "score-list" from local storage,
+           // and set this value to the variable storedScores.
            var storedScores = JSON.parse(localStorage.getItem("score-list"));
 
            // After JSON.parse in line above if storedScores are equal to null,
@@ -186,7 +205,7 @@ function beginQuiz() {
                };
 
                // if storedScores is strictly equal to !null, 
-               // then give the scores array the value of the variable storedScores.
+               // then give the scoresArray the value of the variable storedScores.
                if (storedScores === !null) {
                    scoresArray = storedScores;
                };
@@ -205,9 +224,9 @@ function beginQuiz() {
                for (var i = 0; i < scoresArray.length; i++) {
                    var playerName = scoresArray[i];
 
-                   var li = document.createElement("li");
-                   li.textContent = playerName;
-                   leaderBoardItems.appendChild(li);
+                   var paraEl2 = document.createElement("p");
+                   paraEl2.textContent = playerName;
+                   leaderBoardItems.appendChild(paraEl2);
                };
            };
 
@@ -227,5 +246,5 @@ function beginQuiz() {
 startButton.addEventListener("click", beginQuiz);
 
 // to do
-// - get seconds left value to rank high score values. 
 // - try adding sound effects to the correct and wrong answers.
+// - add a clear highscores button.
